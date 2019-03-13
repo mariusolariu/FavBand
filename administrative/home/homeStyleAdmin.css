@@ -1,0 +1,86 @@
+body{
+	background-image: url("../../resources/imgsAll/milky_way_background.jpeg");
+	padding: 0;
+	margin: 5px;
+	z-index: 0;
+}
+
+ul {
+    list-style-type: none;
+	margin-top:5%;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+li {
+    float: left;
+	border-right: 1px solid #bbb;
+}
+
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+}
+
+.active{
+	background-color: #339EFF;
+	color: white;
+}
+
+li a:hover{
+	background-color: #555;
+	color: white;
+}
+
+table, td, th, tr{
+	border: 1px solid white;
+	color: white;
+	margin: 1%;
+	width: 95%;
+	text-align:center;
+}
+
+.wrapperDiv{
+	width : 60%;
+	margin-left: 20%;
+	margin-right: 20%;
+	margin-top: 1%;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: white;
+	overflow: auto;
+}
+
+#video{
+	height: 150px;
+	width: 15em; 
+}
+
+.updateButton{
+	width: 20%;
+	height: 45px;
+	font-size: large;
+	border-radius: 20px;
+	font-weight: bold;
+	display: block;
+	margin: 0 auto;
+	color: white;
+	background-color: #2eb82e;
+}
+
+.updateButton:hover{
+	background-color: #66ff99;
+}
+
+
