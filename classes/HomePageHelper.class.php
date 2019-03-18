@@ -9,7 +9,7 @@
 			$idLength = 11;
 			$videoId = substr($youtubeLink, - $idLength);
 			
-			return "https://wwww.youtube.com/embed/" . $videoId;
+			return "https://www.youtube.com/embed/" . $videoId;
 		}
 
 		function getNormalLink($embededLink){

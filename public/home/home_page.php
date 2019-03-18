@@ -1,6 +1,7 @@
 	<?php
 		require_once "../../../config.php";
 		require_once "../../classes/HomePageHelper.class.php";
+		require_once "../../classes/FavouriteBandHelper.class.php";
 		require_once "../../classes/DbHelper.class.php";
 
 
@@ -71,7 +72,7 @@
 				<!-- how can I center this? -->
 
 				<iframe id = "video" src="<?php echo $youtubeLink; ?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-		
+
 		</div>
 	</body>
 

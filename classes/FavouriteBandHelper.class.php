@@ -46,6 +46,10 @@
 			echo "</body> </html>";
 
 		}
+		
+		public static function displayErrorMessage($message){
+			echo "<p style = 'color:red'> ${message} </p> </br>";
+		}
 
 	}
 

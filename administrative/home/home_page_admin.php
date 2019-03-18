@@ -5,8 +5,6 @@
 	require_once "../../classes/HomePageHelper.class.php";
 
 	
-	$conn = DbHelper::connect();
-
 
 	//avoid chaching by ther browser of the script
 	$scriptName = "swapContent.js?Marius=" . rand(1, getrandmax());
@@ -14,21 +12,140 @@
 
 	FavouriteBandHelper::displayHeaderAdmin(HOME, $scripts);
 
-	if ($conn){
-			$myQuery = "SELECT * FROM " . TBL_GEN_INFO;
-			$st = $conn -> prepare($myQuery);
-			$st -> execute();
+	$conn = DbHelper::connect();
+
+	if (isset($_POST['submitBtn'])){
+		updateDataInDb($conn);
+		/* echo $_POST['bandNameText']; */
+	}
+
+	displayDataFromDb($conn);
+	
+
+	function updateDataInDb($conn){
+
+		if ($conn){
+			//get data from submited form	
+			$newBandName = $_POST['bandNameText'];
+			$newWlcmTxt = $_POST['wlcmTxtArea'];	
+			$newEmbeddedYTL = HomePageHelper :: getEmbedLink($_POST['youtubeLnkText']);
 			
+			$query = "UPDATE " . TBL_GEN_INFO . " SET bandName = :bN, welcomeText = :wT, youtubeLink = :ytL WHERE id = 1";
+			
+			try{
+				$st = $conn -> prepare($query);
+				$st -> bindValue(":bN", $newBandName, PDO::PARAM_STR);
+				$st -> bindValue(":wT", $newWlcmTxt, PDO::PARAM_STR);
+				$st -> bindValue(":ytL", $newEmbeddedYTL, PDO::PARAM_STR);
+				$st -> execute();
 
-			$rows = $st -> fetchAll();
-
-			if ( count($rows) === 1){
-				displayCurrentData($rows);
-			}else{
-				$data = array();
-				displayForm($data);
+			}catch(PDOException $e){
+				FavouriteBandHelper::displayErrorMessage("Query failed: " . $e -> getMessage());
 			}
+
+				//only if the user actually uploaded a new photo then we'll modify the db record
+				$photoName = "";
+
+				if (isset($_FILES['imgInput'])){
+					$photoName = $_FILES['imgInput']['name'];
+					$photoStoredSuccessfully = handlePhotoUpload($photoName);
+				}
+				
+				//get upload name and modify, delete the old one and replace it with the new one and store the name of the new one 
+				if ($photoName && $photoStoredSuccessfully){
+					
+					
+					try{
+						$query1 = "UPDATE " . TBL_GEN_INFO . " SET imgName = :iN WHERE id = 1";
+
+						$st = $conn-> prepare($query1);
+						$st -> bindValue(":iN", $photoName, PDO::PARAM_STR);
+						$st -> execute();
+
+					}catch(PDOException $e){
+						FavouriteBandHelper::displayErrorMessage("Query failed: " . $e -> getMessage());
+					}
+
+				}
+
+		}else{
+			FavouriteBandHelper::displayErrorMessage("Connection to Db couldn't be established");	
+		}
+
+
+	}
+
+
+	function handlePhotoUpload($photoName){
+		$result = false;
+		$source = $_FILES['imgInput']['tmp_name'];
 		
+		$imgsPath = "../../resources/home/imgs/";
+		$destination =  $imgsPath . $photoName;	
+		$uploadError = $_FILES['imgInput']['error'];
+ 
+				if ( $uploadError == UPLOAD_ERR_OK){
+			
+					//move photo to the permanent storage location
+					if (!move_uploaded_file($source, $destination)) FavouriteBandHelper::displayErrorMessage("Sorry, there was a problem uploading the photo!");
+					else $result = true; //successful upload
+
+				}else{
+				
+					switch ($uploadError){
+						case UPLOAD_ERR_INI_SIZE:
+							$message = "The photo is larger than the server allows.";
+							break;
+
+
+						case UPLOAD_ERR_FORM_SIZE:
+							$message = "The photo is larger than the websites supports.";
+							break;
+
+						case UPLOAD_ERR_NO_FILE:
+							$message = "No file was uploaded. Make sure you choose a file to upload.";
+							break;
+						
+						default:
+							$message = "Please contact your webpage administrator for help.";
+					}
+
+					FavouriteBandHelper::displayErrorMessage($message);
+				}
+
+				if ($result){ //delete the previous photo stored in destination
+					$handle = opendir("../../resources/home/imgs");
+			
+					while ($file = readdir($handle)){
+						if (($file != ".") && ($file != "..") && ($file != $photoName)) unlink($imgsPath . $file);
+					}
+
+					closedir($handle);	
+				}
+
+		return $result;
+	}
+
+	function displayDataFromDb($conn){
+
+			if ($conn){
+					$myQuery = "SELECT * FROM " . TBL_GEN_INFO;
+					$st = $conn -> prepare($myQuery);
+					$st -> execute();
+					
+
+					$rows = $st -> fetchAll();
+
+					if ( count($rows) === 1){
+						displayCurrentData($rows);
+					}else{
+						$data = array();
+						displayForm($data);
+					}
+				
+			}else{
+				FavouriteBandHelper::displayErrorMessage("Connection to Db couldn't be established");	
+			}
 	}
 
 
@@ -65,9 +182,8 @@
 		echo '</div>';
 	}
 
+	FavouriteBandHelper::displayFooter();
+
 ?>		
 
-	</body>
-
-</html>
 
