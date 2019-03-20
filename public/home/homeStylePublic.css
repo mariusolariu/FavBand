@@ -44,7 +44,7 @@ li a:hover{
 	color: white;
 }
 
-.wrapperDiv{
+#wrapperDiv{
 	width:60%;
 	margin-left:20%;
 	margin-right:20%;
@@ -54,18 +54,22 @@ li a:hover{
 	overflow: auto;
 }
 
-table, tr{
-	border: 1px solid white;
+#wrapperDiv2{
+	width:60%;
+	margin-left:20%;
+	margin-right:20%;
+	margin-top:1%;
+	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
-	margin: 2% auto;
-	width: 65%;
-	text-align:center;
-	border-spacing: 0 10px;
+	overflow: auto;
 }
 
-.b{
- 	 background-color: #2eb82e;
-	 margin: 10px auto;
-	 display: block; 
-	 
+div,  h1, img, p {
+	margin: 1%;
+}
+
+#video{
+	height : 450px;
+	width : 93%;
+	margin : 3%;
 }

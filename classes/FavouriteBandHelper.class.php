@@ -2,13 +2,13 @@
 	require_once ("../../../config.php");
 	
 	class FavouriteBandHelper{
-		private static $stylesheets = array('homeStyleAdmin.css', 'newsStyleAdmin.css', 'toursStyleAdmin.css', 'galleryStyleAdmin.css', 'discographyStyleAdmin.css', 'aboutUsStyleAdmin.css');	
+		private static $stylesheets = array('homeStyleAdmin.css', 'newsStyleAdmin.css', 'toursStyleAdmin.css', 'galleryStyleAdmin.css', 'discographyStyleAdmin.css', 'aboutUsStyleAdmin.css', 'homeStylePublic.css', 'newsStylePublic.css', 'toursStylePublic.css', 'galleryStylePublic.css','discographyStylePublic.css','aboutUsStylePublic.css');	
 
-		private static $pageTitles = array('Home Admin', 'News Admin', 'Tours Admin', 'Gallery Admin', 'Discography Admin', 'About Us Admin');
+		private static $pageTitles = array('Home Admin', 'News Admin', 'Tours Admin', 'Gallery Admin', 'Discography Admin', 'About Us Admin','Home', 'News', 'Tours', 'Gallery', 'Discography', 'About Us' );
 
 
 		//FIXME make this method to be more general e.g: can handle the public part as well (though it might be challenging);
-		public static function  displayHeaderAdmin($option, $pageScripts){
+		public static function  displayHeader($option, $pageScripts){
 				$stylesheet = FavouriteBandHelper::$stylesheets[$option];
 				$pageTitle = FavouriteBandHelper::$pageTitles[$option];
 	
@@ -31,12 +31,13 @@
 							<body>
 
 								<ul>
-									<li> <a id = 'homeAnchor'" .   ($option == HOME?  "class = 'active'" : "")  . " href = '../home/home_page_admin.php'> Home </a> </li> 
-									<li> <a id = 'newsAnchor' " .   ($option == NEWS?  "class = 'active'" : "")  . " href = '../news/news_admin.php'> News</a> </li>
-									<li> <a id = 'toursAnchor' " .   ($option == TOURS?  "class = 'active'" : "")  . "href = '../tours/tours_admin.php' > Tours </a> </li>
-									<li> <a id = 'galleryAnchor' " .   ($option == GALLERY?  "class = 'active'" : "")  . "href = '../gallery/gallery_admin.php'> Gallery </a> </li>
-									<li> <a id = 'discographyAnchor' " .   ($option == DISCOGRAPHY?  "class = 'active'" : "")  . "href = '../discography/discography_admin.php' > Discography </a> </li>
-									<li> <a id = 'aboutAnchor' " .   ($option == ABOUT_US?  "class = 'active'" : "")  . "href = '../about_us/about_us_admin.php'> About us </a> </li>
+									<li> <a id = 'homeAnchor'" .   ((($option == HOME_ADMIN) || ($option == HOME_PUBLIC)) ?  "class = 'active'" : "")  . " href = " . ($option <= 5 ? '../home/home_page_admin.php' : '../home/home_page_public.php') . "> Home </a> </li> 
+									<li> <a id = 'newsAnchor' " .   ((($option == NEWS_ADMIN) || ($option == NEWS_PUBLIC))?  "class = 'active'" : "") . " href = "  . ($option <= 5 ? '../news/news_admin.php' : "../news/news_public.php") . "> News</a> </li>
+									<li> <a id = 'toursAnchor' " .   (($option == TOURS_ADMIN) || ($option == TOURS_PUBLIC)?  "class = 'active'" : "")  . "href = " . ($option <= 5?  '../tours/tours_admin.php' : "../tours/tours_public.php") . " > Tours </a> </li>
+
+									<li> <a id = 'galleryAnchor' " .   (($option == GALLERY_ADMIN) || ($option == GALLERY_PUBLIC)?  "class = 'active'" : "")  . "href = " . ($option <= 5? '../gallery/gallery_admin.php' : '../gallery/gallery_public.php') . "> Gallery </a> </li>
+									<li> <a id = 'discographyAnchor' " .   (($option == DISCOGRAPHY_ADMIN) || ($option == DISCOGRAPHY_PUBLIC)?  "class = 'active'" : "")  . "href = " . ($option <= 5? '../discography/discography_admin.php' : '../discography/discography_public.php') ." > Discography </a> </li>
+									<li> <a id = 'aboutAnchor' " .   (($option == ABOUT_US_ADMIN) || ($option == ABOUT_US_PUBLIC)?  "class = 'active'" : "")  . "href = " . ($option <= 5 ? '../about_us/about_us_admin.php' : '../about_us/about_us_public.php') . "> About us </a> </li>
 
 								</ul>";
 		}

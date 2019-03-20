@@ -51,7 +51,7 @@ li a:hover{
 }
 
 .box0{
-	width: 27%;
+	width: 20%;
 	height: 220px;
 	background-color: rgba(0,0,0, 0.5);
 	float: left;
@@ -64,7 +64,7 @@ li a:hover{
 
 
 .box1{
-	width: 27%;
+	width: 20%;
 	height: 220px;
 	background-color: rgba(0,0,0, 0.5);
 	float: left;
@@ -76,10 +76,10 @@ li a:hover{
 }
 
 .box2{
-	width: 27%;
+	width: 20%;
 	height: 220px;
 	background-color: rgba(0,0,0, 0.5);
-	float: right;
+	float: left;
 	margin-right: 5%;
 	margin-top: 5%;
 	margin-bottom: 5%;
@@ -108,13 +108,4 @@ table{
 
 td{
 	border: 1px solid white;
-}
-.wrapperDiv{
-	width:60%;
-	margin-left:20%;
-	margin-right:20%;
-	margin-top:1%;
-	background-color: rgba(0, 0, 0, 0.5);
-	color: white;
-	overflow: auto;
 }

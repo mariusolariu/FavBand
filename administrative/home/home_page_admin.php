@@ -10,7 +10,7 @@
 	$scriptName = "swapContent.js?Marius=" . rand(1, getrandmax());
 	$scripts = array($scriptName);
 
-	FavouriteBandHelper::displayHeaderAdmin(HOME, $scripts);
+	FavouriteBandHelper::displayHeader(HOME_ADMIN, $scripts);
 
 	$conn = DbHelper::connect();
 

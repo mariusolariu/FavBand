@@ -3,7 +3,7 @@
 	require_once "../../../config.php";
 
 	$scripts = array();
-	FavouriteBandHelper::displayHeaderAdmin(ABOUT_US, $scripts);
+	FavouriteBandHelper::displayHeader(ABOUT_US_ADMIN, $scripts);
 	
    // add content
 

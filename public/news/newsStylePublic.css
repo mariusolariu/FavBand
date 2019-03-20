@@ -54,18 +54,4 @@ li a:hover{
 	overflow: auto;
 }
 
-table, tr{
-	border: 1px solid white;
-	color: white;
-	margin: 2% auto;
-	width: 65%;
-	text-align:center;
-	border-spacing: 0 10px;
-}
 
-.b{
- 	 background-color: #2eb82e;
-	 margin: 10px auto;
-	 display: block; 
-	 
-}
