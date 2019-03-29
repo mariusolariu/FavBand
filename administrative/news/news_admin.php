@@ -17,7 +17,8 @@
 			addInsertArticleButton();
 			displayDbContent();
 		}elseif (isset($_POST['action']) && $_POST['action'] == 'Add Article'){
-			displayNews("", "", "" , "", true);
+			$insertNewArticle = true;
+			displayNews("", "", "" , "", $insertNewArticle);
 		}elseif (isset($_POST['action']) && $_POST['action'] == 'Submit Article'){
 			insertArticleDB();
 			addInsertArticleButton();
@@ -67,7 +68,9 @@
 		function updateDb(){
 			GLOBAL $conn;
 			$title = $_POST['newsTitle'];
+
 			$description = $_POST['taDesc'];
+			$description = str_replace("\n", "</br>" , $description);
 			$newsDate = $_POST['newsDate'];
 			$newsId = (int) $_POST['newsId'];
 		
@@ -129,7 +132,7 @@
 
 								displayNews($newsId, $title, $description, $news_date, false);
 								
-								echo "<p> &nbsp </p>";
+								echo "<p> &nbsp; </p>";
 							}
 					}catch (PDOException $e){
 						FavouriteBandHelper::displayErrorMessage("Failed to execute query: " . $e->getMessage());
@@ -149,9 +152,9 @@
 		function displayNews($newsId, $title, $description, $news_date, $insertNewArticle){
 			echo " <div class = 'wrapperDiv'>";
 				echo "<form method = 'post' action = 'news_admin.php'>";
+						echo "  <input type = 'hidden' name = 'newsId' value = '${newsId}'>"; //I won't do this in real-world, I promise!
 					echo "<table>";
 
-							echo " <td> <input type = 'hidden' name = 'newsId' value = '${newsId}'>"; //I won't do this in real-world, I promise!
 
 						echo "<tr>";
 						echo "<td> <label> Title </label> </td>";
@@ -160,6 +163,7 @@
 						echo "</td></tr>" ;
 
 						echo "<tr>";
+						$description = str_replace("</br>", "\n", $description);
 						echo "<td> Description </td>";
 							echo "<td> <textarea name = 'taDesc' rows = '15' cols = '56'> ${description} </textarea>";
 

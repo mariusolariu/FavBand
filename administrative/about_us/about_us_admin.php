@@ -124,14 +124,17 @@
 		//update photo only if a new one was submited
 		$oldPhotoName = $_POST['oldPhotoName'];
 		$newPhotoName = "";
+		
 
-		if (isset($_FILES['newPhotoI'])){
+		if (isset($_FILES['newPhotoI']['name'])){
 			$newPhotoName = $_FILES['newPhotoI']['name'];
 		}	
+
 
 		if (($newPhotoName != "") && ($newPhotoName != $oldPhotoName)){
 			$fullPath = ABOUT_IMGS_PATH . $oldPhotoName;
 			$success = handlePhotoUpload();
+			
 
 			if (!$success) {
 				FavouriteBandHelper::displayErrorMessage("Couldn't store the new photo, please contact webpage administrator!");
@@ -139,6 +142,7 @@
 			}
 
 			$success = unlink($fullPath);
+			FavouriteBandHelper::displayErrorMessage($success);
 
 			if (!$success) {
 				FavouriteBandHelper::displayErrorMessage("Couldn't delete the old photo, please contact webpage administrator!");
@@ -146,7 +150,7 @@
 			}
 
 			try{
-				$query = "UPDATE " . TBL_ABOUT . " SET img_name = :in WHERE id = 1";
+				$query = "UPDATE " . TBL_ABOUT . " SET img_name = :in";
 					
 				$st = $conn -> prepare ($query);
 				$st->bindValue(":in", $newPhotoName, PDO::PARAM_STR);

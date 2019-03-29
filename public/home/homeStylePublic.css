@@ -68,8 +68,18 @@ div,  h1, img, p {
 	margin: 1%;
 }
 
+p{
+	text-indent: 2em;
+}
+
 #video{
 	height : 450px;
 	width : 93%;
 	margin : 3%;
+}
+
+#mainPhotoId{
+	text-align : right;
+	width : 350px;
+	height : 450px;
 }

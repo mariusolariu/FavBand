@@ -73,3 +73,8 @@ table{
 td{
 	border: 1px solid white;
 }
+
+#topImgId{
+ 		width : 98%;
+		height : 250px;
+}

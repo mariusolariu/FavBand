@@ -218,7 +218,7 @@
 
 						echo "</div>";
 
-				if ( (($i+1) % $NO_SMALL_DIVS ) == 0) echo " </div> </br> ";
+				if ( (($i+1) % $NO_SMALL_DIVS ) == 0) echo " </div>  ";
 			}	
 
 			//add the ending div if it needed 

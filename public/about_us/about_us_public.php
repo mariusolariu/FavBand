@@ -15,13 +15,13 @@
 		GLOBAL $conn;
 
 		if ($conn){	
-				$query = "SELECT * FROM " . TBL_ABOUT;
+				$query = "SELECT * FROM " . TBL_ABOUT ;
 				
 				$statement = $conn -> query($query);
 
 				$row = null;
 				$row = $statement -> fetch(PDO::FETCH_ASSOC);
-
+				
 
 				if ($row != null){
 
@@ -33,7 +33,7 @@
 ?>
 
 					<div class = 'wrapperDiv'>
-						<img src = '<?php echo $imgAbsolutePath; ?>' align = 'top' width = '98%' height = '250px'>
+						<img src = '<?php echo $imgAbsolutePath; ?>' alt = 'Image showing the band' align = 'top' id = 'topImgId'>
 
 						<h2> <?php echo $title; ?> </h2>
 

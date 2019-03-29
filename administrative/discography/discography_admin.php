@@ -29,15 +29,14 @@
 					$year = $_POST['yearI'];
 					displayInsertForm($discDbId, $title, $year);
 			}elseif ($val == 'Delete Disc'){
-       				$imgDbId = $_POST['imgDbId'];
-					$photoName = $_POST['imgSrcName'];
-					deleteImage($imgDbId, $photoName);	
+					$discDbId = $_POST['discDbIdI'];
+					deleteImage($discDbId);	
 					addInsertPhotoButton();
 					displayDbContent();
 			}elseif ($val == 'Add Disc'){
 					$discDbId = -1;
 					$title = "";
-					$year = -1;
+					$year = "";
 					displayInsertForm($discDbId, $title, $year);
 			}			
 	}else{
@@ -75,26 +74,33 @@
 
 	}
 
-	function deleteImage($imgDbId, $photoName){
+	function deleteImage($discDbId){
 		GLOBAL $conn;
-		$absolutePath = GALLERY_IMGS_PATH . $photoName;
+
+		$photoName = getImgName($discDbId);
+
+		if ($photoName  == ""){
+				FavouriteBandHelper::displayErrorMessage("Failed to retrieve requested resource, please contact webpage administrator! ");
+				return;
+		}
+
+
+		$absolutePath = DISCOGRAPHY_IMGS_PATH . $photoName;
 		$successful = unlink($absolutePath);
 
 		if (!$successful) {
-				FavouriteBandHelper::displayErrorMessage("Cannot delete photo, please contact website administrator!");
+				FavouriteBandHelper::displayErrorMessage("Cannot delete disc, please contact website administrator!");
 				return;
 		}
 
 
 		if ($conn){
 			try{
-				$query = 'DELETE FROM ' . TBL_GALLERY . ' WHERE id = :rowId';
+				$query = 'DELETE FROM ' . TBL_DISCOGRAPHY . ' WHERE id = :rowId';
 			
 				$st = $conn -> prepare($query);
-				$st->bindValue(":rowId", $imgDbId, PDO :: PARAM_INT);
+				$st->bindValue(":rowId", $discDbId, PDO :: PARAM_INT);
 				$st->execute();
-
-
 
 			}catch (PDOException $e){
 				FavouriteBandHelper::displayErrorMessage("Failed to execute query: " . $e->getMessage());
@@ -107,52 +113,77 @@
 
 	}
 
-	function updateDisc($discDbId, $title, $year){
+	function getImgName($discDbId){
+		$result = "";
 		GLOBAL $conn;
 
 		if ($conn){
-			$query = 'SELECT img_name FROM ' . TBL_DISCOGRAPHY . ' WHERE id = :rI';
+			try{	
+				$query = 'SELECT img_name FROM ' . TBL_DISCOGRAPHY . ' WHERE id = :rI';
+				
+				$st = $conn -> prepare($query);
+				$st->bindValue(":rI", $discDbId, PDO::PARAM_INT);
+				$st->execute();
+
+				$result = $st -> fetchAll();
+
+				$result = $result[0]['img_name'];
 			
-			$st = $conn -> prepare($query);
-			$st->bindValue(":rI", $discDbId, PDO::PARAM_INT);
-			$st->execute();
+			}catch (PDOException $e){
+				FavouriteBandHelper::displayErrorMessage("Failed to execute query: " . $e->getMessage());
+				return;
+			}
 
-			$result = $st -> fetchAll();
 
-			FavouriteBandHelper::displayErrorMessage(print_r($resulti[0], true));
 		}else{
 			FavouriteBandHelper::displayErrorMessage("Database connection could not be established, please contact the webpage administrator!");
+			return;
 		}
 
-		$absolutePath = GALLERY_IMGS_PATH . $oldPhotoName;
+
+		return $result;
+	}
+
+	function updateDisc($discDbId, $title, $year){
+		GLOBAL $conn;
+
+		$oldPhotoName = getImgName($discDbId);
+
+		if ($oldPhotoName  == ""){
+				FavouriteBandHelper::displayErrorMessage("Failed to retrieve requested resource, please contact webpage administrator! ");
+				return;
+		}
+
+		$absolutePath = DISCOGRAPHY_IMGS_PATH . $oldPhotoName;
 		$successful = unlink($absolutePath);
 
 		if (!$successful) {
+				FavouriteBandHelper::displayErrorMessage("Cannot update disc, please contact website administrator!");
+				return;
+		}
+
+		$newPhotoName = $_FILES['imgI']['name'];
+
+		$storedPhotoSuccessfully = handlePhotoUpload();
+	
+		if (!$storedPhotoSuccessfully){
 				FavouriteBandHelper::displayErrorMessage("Cannot update photo, please contact website administrator!");
 				return;
 		}
 
-		/* $newPhotoName = $_FILES['imgI']['name']; */
-
-		/* $storedPhotoSuccessfully = handlePhotoUpload(); */
-	
-		/* if (!$storedPhotoSuccessfully){ */
-		/* 		FavouriteBandHelper::displayErrorMessage("Cannot update photo, please contact website administrator!"); */
-		/* 		return; */
-		/* } */
-
-		/* try{ */
-		/* 	$query = 'UPDATE ' . TBL_GALLERY . ' SET img_name = :in, caption = :c WHERE id = :rowId'; */
+		try{
+			$query = 'UPDATE ' . TBL_DISCOGRAPHY . ' SET img_name = :in, title = :t, year = :y WHERE id = :rowId';
 		
-		/* 	$st = $conn -> prepare($query); */
-		/* 	$st->bindValue(":in", $newPhotoName, PDO :: PARAM_STR); */
-		/* 	$st->bindValue(":c", $_POST['captionI'], PDO :: PARAM_STR); */
-		/* 	$st->bindValue(":rowId", $imgDbId, PDO :: PARAM_INT); */
-		/* 	$st->execute(); */
+			$st = $conn -> prepare($query);
+			$st->bindValue(":in", $newPhotoName, PDO :: PARAM_STR);
+			$st->bindValue(":t", $title, PDO :: PARAM_STR);
+			$st->bindValue(":y", $year, PDO :: PARAM_INT);
+			$st->bindValue(":rowId", $discDbId, PDO :: PARAM_INT);
+			$st->execute();
 
-		/* }catch (PDOException $e){ */
-		/* 	FavouriteBandHelper::displayErrorMessage("Failed to execute query: " . $e->getMessage()); */
-		/* } */
+		}catch (PDOException $e){
+			FavouriteBandHelper::displayErrorMessage("Failed to execute query: " . $e->getMessage());
+		}
 
 	}
 
@@ -296,13 +327,14 @@
 
 							echo "\n \t \t <form action = 'discography_admin.php' method = 'post' >";
 									
+								echo "<input type = 'hidden' name = 'discDbIdI' value = '${discDbId}'>";
+								echo "<input type = 'hidden' name = 'titleI' value = '${title}'>";
+								echo "<input type = 'hidden' name = 'yearI' value = '${year}'>";
+
 									echo "\n\t\t\t<table>";
 									
-										echo "<input type = 'hidden' name = 'discDbIdI' value = '${discDbId}'>";
-										echo "<input type = 'hidden' name = 'titleI' value = '${title}'>";
-										echo "<input type = 'hidden' name = 'yearI' value = '${year}'>";
 
-										echo "<tr> <td> <img src='${imgAbsolutePath}' name = 'imgI' alt = '${title}' width = '100%' height = '200px' style = 'border-radius: 10px;' > </td> </tr>";
+										echo "<tr> <td> <img src='${imgAbsolutePath}'  class = 'discImg' alt = '${title}' > </td> </tr>";
 										echo "<tr> <td> <span  style = 'margin-left: 5px;'>${title} </span> </td> </tr>";
 										echo "<tr> <td> <span  style = 'margin-left: 5px;'>${year} </span> </td> </tr>";
 										echo "<tr> <td> <input type = 'submit' name = 'action' value = 'Delete Disc' style = 'background-color: red; margin: 0px 45px;'> " . 

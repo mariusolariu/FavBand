@@ -42,7 +42,7 @@
 						echo "<h1> Welcome to " . ($bandName != "" ? $bandName : "NoBand") . "'s website! </h1>";
 
 						$imgPath = HomePageHelper::$imgsPath . $imgName;
-						echo "<img src = '${imgPath}'alt = \"${bandName}\" align = \"right\" width = \"350\" height = \"450\" > "; 
+						echo "<img src = '${imgPath}' alt = \"${bandName}\"  align = 'right' id = 'mainPhotoId' > "; 
 						echo "<p> ${welcomeText}  </p>"; 
 				
 				
@@ -50,7 +50,7 @@
 
 			echo  "<div id = 'wrapperDiv2' >";
 
-			echo  "<iframe id = 'video' src='${youtubeLink}' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
+			echo  "<iframe id = 'video' src='${youtubeLink}'  allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
 
 			echo "</div>";
 	}

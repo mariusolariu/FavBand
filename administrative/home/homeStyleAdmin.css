@@ -57,6 +57,7 @@ table, td, th, tr{
 	margin-left: 20%;
 	margin-right: 20%;
 	margin-top: 1%;
+	margin-bottom: 1%;
 	background-color: rgba(0, 0, 0, 0.5);
 	color: white;
 	overflow: auto;
@@ -77,6 +78,7 @@ table, td, th, tr{
 	margin: 0 auto;
 	color: white;
 	background-color: #2eb82e;
+	margin-bottom: 1%;
 }
 
 .updateButton:hover{

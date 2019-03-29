@@ -16,7 +16,6 @@
 
 	if (isset($_POST['submitBtn'])){
 		updateDataInDb($conn);
-		/* echo $_POST['bandNameText']; */
 	}
 
 	displayDataFromDb($conn);
@@ -28,6 +27,7 @@
 			//get data from submited form	
 			$newBandName = $_POST['bandNameText'];
 			$newWlcmTxt = $_POST['wlcmTxtArea'];	
+			$newWlcmTxt = str_replace("\n", "</br>", $newWlcmTxt);	
 			$newEmbeddedYTL = HomePageHelper :: getEmbedLink($_POST['youtubeLnkText']);
 			
 			$query = "UPDATE " . TBL_GEN_INFO . " SET bandName = :bN, welcomeText = :wT, youtubeLink = :ytL WHERE id = 1";
@@ -46,7 +46,7 @@
 				//only if the user actually uploaded a new photo then we'll modify the db record
 				$photoName = "";
 
-				if (isset($_FILES['imgInput'])){
+				if (isset($_FILES['imgInput']) && ($_FILES['imgInput']['name'] != "")){
 					$photoName = $_FILES['imgInput']['name'];
 					$photoStoredSuccessfully = handlePhotoUpload($photoName);
 				}
@@ -154,10 +154,11 @@
 		echo  '<div class = "wrapperDiv" id = "wrapperDivId">';
 		
 		foreach ($rows as $row){
-			/* echo "<p> " . $row['bandName'] . " " . $row['youtubeLink'] . "</p> </br>"; */
 
 			$bandName = $row['bandName'];
 			$welcomeText = $row['welcomeText'];
+			$welcomeText = str_replace("</br>", "\n", $welcomeText);
+
 			$youtubeLink = $row['youtubeLink'];
 			$imgName = $row['imgName'];
 		}
@@ -169,8 +170,8 @@
 						echo "<tr> <th> Band Name </th> <th> Welcome Text </th> <th> Youtube Link </th> <th> Image </th> </tr>";
 						echo "<tr> <td> <span id='bandName'> ${bandName} </span> </td> " .
 								  "<td> <textarea id = 'wTA' rows = '15' cols = '40' disabled> ${welcomeText} </textarea> </td>" .
-								  "<td> <iframe id = 'video' src = '${youtubeLink}' frameborder = '0' allow ='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen> </iframe> </td>" .
-								  "<td> <img id = 'imgId' src = '${imgPath}' alt = '${imgName}' width = '100px' height = '150px'> </td> </tr>";	
+								  "<td> <iframe id = 'video' src = '${youtubeLink}'  allow ='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen> </iframe> </td>" .
+								  "<td> <img id = 'imgId' src = '${imgPath}' alt = '${imgName}' width = '100' height = '150'> </td> </tr>";	
 				
 
 				echo "</table>";
@@ -178,7 +179,6 @@
 
 			echo "<input type = 'button' class = 'updateButton'  name = 'updateButton' id = 'updateButton' value = 'update'>";
 
-			echo "</br>";
 		echo '</div>';
 	}
 

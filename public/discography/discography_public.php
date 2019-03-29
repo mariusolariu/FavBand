@@ -48,14 +48,14 @@
 						echo "\n \t <div class='${boxType}'>";
 
 							echo "\n \t\t <table>";
-								echo "\n\t\t\t <tr> <td> <img src='${imgAbsolutePath}' alt = '${title}' width = '100%' height = '200px' style = 'border-radius: 10px;' > </td> </tr>";
+								echo "\n\t\t\t <tr> <td> <img src='${imgAbsolutePath}' alt = '${title}' class = 'imgStyle' > </td> </tr>";
 								echo "\n\t\t\t<tr> <td> <span style = 'margin-left: 5px;'>${title} </span> </td> </tr>";
 								echo "\n\t\t\t<tr> <td> <span style = 'margin-left: 5px;'>${year} </span> </td> </tr>";
 							echo "\n\t\t</table>";
 
 						echo "\n\t</div>";
 
-				if ( (($i+1) % $IMGS_PER_DIV) == 0) echo "\n </div> </br> ";
+				if ( (($i+1) % $IMGS_PER_DIV) == 0) echo "\n </div>  ";
 			}	
 
 			//add the ending div if it needed 

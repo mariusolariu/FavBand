@@ -88,3 +88,9 @@ li a:hover{
 	border-radius:20px;
 	color: white;
 }
+
+.imgStyle{
+	width : 100%;
+	height : 200px;
+	border-radius: 10px; 
+}

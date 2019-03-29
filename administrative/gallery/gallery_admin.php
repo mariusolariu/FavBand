@@ -58,7 +58,7 @@
 				$query = 'INSERT ' . TBL_GALLERY . ' (img_name, caption) VALUES (:in, :c)';
 			
 				$st = $conn -> prepare($query);
-				$st->bindValue(":in", $_FILES['imgI']['name'], PDO :: PARAM_STR);
+				$st->bindValue(":in", $_FILES['newPhotoI']['name'], PDO :: PARAM_STR);
 				$st->bindValue(":c", $_POST['captionI'], PDO :: PARAM_STR);
 				$st->execute();
 
@@ -114,7 +114,7 @@
 				return;
 		}
 
-		$newPhotoName = $_FILES['imgI']['name'];
+		$newPhotoName = $_FILES['newPhotoI']['name'];
 
 		$storedPhotoSuccessfully = handlePhotoUpload();
 	
@@ -145,11 +145,11 @@
 
 	function handlePhotoUpload(){
 		$result = false;
-		$source = $_FILES['imgI']['tmp_name'];
+		$source = $_FILES['newPhotoI']['tmp_name'];
 
-		$photoName = $_FILES['imgI']['name'];
+		$photoName = $_FILES['newPhotoI']['name'];
 		$destination =  GALLERY_IMGS_PATH . $photoName;	
-		$uploadError = $_FILES['imgI']['error'];
+		$uploadError = $_FILES['newPhotoI']['error'];
  
 				if ( $uploadError == UPLOAD_ERR_OK){
 			
@@ -194,8 +194,8 @@
 				<input type = 'hidden' name = 'imgDbId'  value = '<?php echo $imgDbId; ?>'>
 
 				<table id = 'theTable' >
-					<tr> <td> Caption </td> <td> <input type = 'text' name = 'captionI' value = ' <?php echo $caption;?>' style = 'width : 97%;' > </td> </tr>
-					<tr> <td> Pick photo </td> <td> <input type = 'file' id = 'imgI' name = 'imgI' accept = 'image/*'> </td> </tr>
+					<tr> <td> Caption </td> <td> <input type = 'text' name = 'captionI' value = ' <?php echo $caption;?>' style = 'width : 95%;' > </td> </tr>
+					<tr> <td> Pick photo </td> <td> <input type = 'file' name = 'newPhotoI' accept = 'image/*'> </td> </tr>
 					<tr> <td> </td> <td> <input type = 'submit' name = 'submitI' value = 'Submit'> </td> </tr>
 
 				</table>
@@ -281,13 +281,14 @@
 
 							echo "\n \t \t <form action = 'gallery_admin.php' method = 'post' >";
 									
+								echo "<input type = 'hidden' name = 'imgDbId' value = '${entryId}'>";
+								echo "<input type = 'hidden' name = 'imgSrcName' value = '${imgName}'>";
+								echo "<input type = 'hidden' name = 'captionI' value = '${caption}'>";
+
 									echo "\n\t\t\t<table>";
 									
-										echo "<input type = 'hidden' name = 'imgDbId' value = '${entryId}'>";
-										echo "<tr> <td> <img src='${imgAbsolutePath}' name = 'imgI' alt = '${caption}' width = '100%' height = '200px' style = 'border-radius: 10px;' > </td> </tr>";
-										echo "<input type = 'hidden' name = 'imgSrcName' value = '${imgName}'>";
+										echo "<tr> <td> <img src='${imgAbsolutePath}'  class = 'imgI' alt = '${caption}'> </td> </tr>";
 										echo "<tr> <td> <span  style = 'margin-left: 5px;'>${caption} </span> </td> </tr>";
-										echo "<input type = 'hidden' name = 'captionI' value = '${caption}'>";
 										echo "<tr> <td> <input type = 'submit' name = 'action' value = 'Delete Image' style = 'background-color: red; margin: 0px 45px;'> " . 
 												" <input type = 'submit'  name = 'action' value = 'Update Image' style = 'background-color: #2eb82e;'> </td> </tr>";
 									echo "</table>";

@@ -62,7 +62,7 @@
 
 						echo "</div>";
 
-				if ( (($i+1) % 4) == 0) echo " </div> </br> ";
+				if ( (($i+1) % 4) == 0) echo " </div>"; 
 			}	
 
 			//add the ending div if it needed 

@@ -46,13 +46,13 @@
 						echo "<div class='${boxType}'>";
 
 							echo "<table>";
-								echo "<tr> <td> <img src='${imgAbsolutePath}' alt = '${caption}' width = '100%' height = '200px' style = 'border-radius: 10px;' > </td> </tr>";
+								echo "<tr> <td> <img src='${imgAbsolutePath}' alt = '${caption}' class = 'imgStyle' > </td> </tr>";
 								echo "<tr> <td> <span style = 'margin-left: 5px;'>${caption} </span> </td> </tr>";
 							echo "</table>";
 
 						echo "</div>";
 
-				if ( (($i+1) % $IMGS_PER_DIV) == 0) echo " </div> </br> ";
+				if ( (($i+1) % $IMGS_PER_DIV) == 0) echo " </div>"; 
 			}	
 
 			//add the ending div if it needed 
